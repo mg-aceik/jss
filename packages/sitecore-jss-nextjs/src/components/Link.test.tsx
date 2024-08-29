@@ -351,14 +351,35 @@ describe('<Link />', () => {
 
   it('should render nothing with missing field', () => {
     const field = (null as unknown) as LinkField;
-    const rendered = mount(<Link field={field} />).children();
-    expect(rendered).to.have.length(0);
+    const rendered = mount(<Link field={field} />);
+    expect(rendered.html()).to.equal(null);
   });
 
   it('should render nothing with missing field', () => {
     const field = {};
-    const rendered = mount(<Link field={field} />).children();
-    expect(rendered).to.have.length(0);
+    const rendered = mount(<Link field={field} />);
+    expect(rendered.html()).to.equal(null);
+  });
+    
+  it('should render nothing when field is present and href is not present', () => {
+    const field = {
+      value: {
+        text: 'ipsum',
+      },
+    };
+    const rendered = mount(<Link field={field} />);
+    expect(rendered.html()).to.equal('');
+  });
+    
+  it('should render when field is present and href is present', () => {
+    const field = {
+      value: {
+        text: 'ipsum',
+        href: '/lorem',
+      },
+    };
+    const rendered = mount(<Link field={field} />);
+    expect(rendered.html()).to.equal('<a href="/lorem">ipsum</a>');
   });
 
   describe('editMode metadata', () => {
